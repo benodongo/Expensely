@@ -1,0 +1,411 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'assets/images/logo/logo-sm.png' %}" type="image/gif" sizes="16x16">
+    <title>Dashboard</title>
+    <meta name="og:description" content="Expensely">
+    <meta name="robots" content="index, follow">
+    <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
+    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <!-- bootstrap css link -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap_5/bootstrap.min.css' %}">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="{% static 'lib/fontawesome/css/all.min.css' %}">
+    <!-- main css -->
+    <link rel="stylesheet" href="{% static 'assets/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <!-- responsive css -->
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+</head>
+
+<body class="d2c_theme_light">
+    <!-- Preloader Start -->
+    <div class="preloader">
+        <!-- <img src="{% static 'assets/images/logo/logo.png' %}" alt="DesignToCodes">-->
+    </div>
+    <!-- Preloader End -->
+
+    <div class="d2c_wrapper">
+
+        <!-- Main sidebar -->
+        <div class="d2c_sidebar offcanvas-lg offcanvas-start p-4 pe-lg-2" tabindex="-1" id="d2c_sidebar">
+            <div class="d-flex flex-column">
+                <!-- Logo -->
+                <a href="{% url 'core:home' %}" class="mb-5 brand-icon">
+                    <img class="navbar-brand" src="{% static 'assets/images/logo/logo.png' %}" alt="logo">
+                </a>
+                <!-- End:Logo -->
+
+                <!-- Profile -->
+                <div class="card d2c_profile_card text-center mb-4">
+                    <!-- Profile Image -->
+                    <a href="{% url 'core:home' %}">
+                        <img class="rounded-circle d2c_profile_image position-absolute top-0 start-50 translate-middle mb-2" src="{% static 'assets/images/profile/profile-1.jpg' %}" alt="d2c Profile Image">
+                    </a>
+                    <!-- End:Profile Image-->
+
+                    <div class="card-body mt-4">
+                        <h6 class="fw-bold mb-3">Wade Warren</h6>
+                        <ul class="list-inline">
+                            <!-- Notification -->
+                            <li class="list-inline-item position-relative me-3">
+                                <a class="nav-link p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-bell fa-fw"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-secondary border rounded-circle"></span>
+                                </a>
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow border-0 py-0 mt-3">
+                                    <h6 class="dropdown-header text-white bg-primary rounded-top py-3">Notifications</h6>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/elements/notification.html">
+                                        <div class="text-truncate d-block">
+                                            <p class="mb-0"><small>19 sec ago</small></p>
+                                            <h6 class="mb-0">Hi there! I am wondering if you can help me with a problem I've been having.</h6>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/elements/notification.html">
+                                        <div class="text-truncate d-block">
+                                            <p class="mb-0"><small>2 min ago</small></p>
+                                            <h6 class="mb-0">
+                                                I have the photos that you ordered last month, how would
+                                                you like them sent to you?
+                                            </h6>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/elements/notification.html">
+                                        <div class="text-truncate d-block">
+                                            <p class="mb-0"><small>3 min ago</small></p>
+                                            <h6 class="mb-0">Last month's report looks great, I am very happy with
+                                                the progress so far, keep up the good work!</h6>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/elements/notification.html">
+                                        <div class="text-truncate d-block">
+                                            <p class="mb-0"><small>4 min ago</small></p>
+                                            <h6 class="mb-0">Am I a good boy? The reason I ask is because someone
+                                                told me that people say this to all dogs, even if they
+                                                aren't good...</h6>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-center small text-gray-500 py-2" href="./pages/elements/notification.html">See All
+                                        Notifications</a>
+
+                                    <div class="dropdown-arrow bg-info"></div>
+                                </div>
+                            </li>
+                            <!-- End:Notification -->
+
+                            <!-- MailBox -->
+                            <li class="list-inline-item position-relative me-3">
+                                <a class="nav-link p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-envelope-open-text"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                                </a>
+                                <div class="dropdown-list dropdown-menu shadow border-0 end-0 py-0 mt-3">
+                                    <h6 class="dropdown-header text-white bg-primary rounded-top py-3">Mail</h6>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/mailDetails.html">
+                                        <div class="text-truncate d-flex align-items-center">
+                                            <div>
+                                                <img src="{% static 'assets/images/avatar/man-1.png' %}" class="d2c_mail_avatar" alt="profile avatar">
+                                            </div>
+                                            <div>
+                                                <p class="mb-0"><small>3 min ago</small></p>
+                                                <h6 class="mb-0">Hi there! I am wondering if you can help me with a
+                                                    problem I've been having.</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/mailDetails.html">
+                                        <div class="text-truncate d-flex align-items-center">
+                                            <div>
+                                                <img src="{% static 'assets/images/avatar/man-2.png' %}" class="d2c_mail_avatar" alt="profile avatar">
+                                            </div>
+                                            <div>
+                                                <p class="mb-0"><small>4 min ago</small></p>
+                                                <h6 class="mb-0">I have the photos that you ordered last month, how would you like them sent to you?</h6>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/mailDetails.html">
+                                        <div class="text-truncate d-flex align-items-center">
+                                            <div>
+                                                <img src="{% static 'assets/images/avatar/man-3.png'" class="d2c_mail_avatar" alt="profile avatar">
+                                            </div>
+                                            <div>
+                                                <p class="mb-0"><small>6 min ago</small></p>
+                                                <h6 class="mb-0">Last month's report looks great, I am very happy with
+                                                    the progress so far, keep up the good work!</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="./pages/mailDetails.html">
+                                        <div class="text-truncate d-flex align-items-center">
+                                            <div>
+                                                <img src="./assets/images/avatar/man-4.png" class="d2c_mail_avatar" alt="profile avatar">
+                                            </div>
+                                            <div>
+                                                <p class="mb-0"><small>10 min ago</small></p>
+                                                <h6 class="mb-0">Am I a good boy? The reason I ask is because someone
+                                                    told me that people say this to all dogs, even if they
+                                                    aren't good..</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-center small text-gray-500 py-2" href="./pages/mailDetails.html">See All Mail</a>
+
+                                    <div class="dropdown-arrow bg-info"></div>
+                                </div>
+                            </li>
+                            <!-- End:MailBox -->
+
+                            <!-- Setting-->
+                            <li class="list-inline-item position-relative">
+                                <a class="nav-link p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </a>
+                                <div class="dropdown-list dropdown-menu shadow border-0 end-0 py-0 mt-3">
+                                    <h6 class="dropdown-header text-white bg-primary rounded-top py-3">Settings</h6>
+                                    <div class="d2c_profile_settings">
+                                        <a class="dropdown-item d-flex align-items-center py-2" href="./pages/support.html">
+                                            <i class="fas fa-sms"></i>
+                                            <p class="mb-0 ms-2 fw-normal">Messages</p>
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center py-2" href="./pages/elements/profile.html">
+                                            <i class="fas fa-user-cog"></i>
+                                            <p class="mb-0 ms-2 fw-normal">Profile Settings</p>
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                            <p class="mb-0 ms-2 fw-normal">Log Out</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- End:Setting -->
+                        </ul>
+
+                        <!-- Search -->
+                        <form>
+                            <div class="input-group">
+                                <input class="form-control" type="search" placeholder="Search">
+                            </div>
+                        </form>
+                        <!-- End:Search -->
+                    </div>
+                </div>
+                <!-- End:Profile -->
+
+                <!-- Menu -->
+                <div class="card d2c_menu_card mb-4">
+                    <div class="card-body">
+                        <ul class="navbar-nav flex-grow-1">
+                            <!-- Menu Item -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span>Menu</span>
+                                </a>
+                                <!-- Sub Menu -->
+                                <ul class="sub-menu collapse show">
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item active">
+                                        <a class="sub-menu-link" href="{% url 'core:home' %}">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-home"></i>
+                                            </span>
+                                            <span>
+                                                Overview
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="{% url 'core:expense_list' %}">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-money-check-alt"></i>
+                                            </span>
+                                            <span>
+                                                Expenses
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="./pages/transaction.html">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-list-alt"></i>
+                                            </span>
+                                            <span>
+                                                Transaction
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="./pages/wallet.html">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-wallet"></i>
+                                            </span>
+                                            <span>
+                                                Wallet
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="./pages/investment.html">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-network-wired"></i>
+                                            </span>
+                                            <span>
+                                                Investment
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+
+
+
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="{% url 'core:groups'  %}">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-chart-line"></i>
+                                            </span>
+                                            <span>
+                                                Groups
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+                                </ul>
+                                <!-- End:Sub Menu -->
+                            </li>
+                            <!-- End:Menu Item -->
+
+
+
+                            <!-- Menu Item -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span>Extra</span>
+                                </a>
+
+                                <!-- Sub Menu-->
+                                <ul class="sub-menu collapse show" id="extra">
+
+                                    <!-- Sub Menu Item -->
+                                    <li class="nav-item">
+                                        <a class="sub-menu-link" href="./pages/faq.html">
+                                            <span class="d2c_icon">
+                                                <i class="fas fa-question-circle"></i>
+                                            </span>
+                                            <span>
+                                                FAQ
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- End:Sub Menu Item -->
+
+                                  
+
+                                   
+                                </ul>
+                                <!-- End:Sub Menu -->
+                            </li>
+                            <!-- End:Menu Item -->
+
+                          
+                        </ul>
+                    </div>
+                </div>
+                <!-- End:Menu -->
+
+                <!-- Logout -->
+                <div class="card d2c_single_menu mb-4">
+                    <div class="card-body p-0">
+                        <ul class="navbar-nav">
+                            <!-- Item -->
+                            <li class="nav-item">
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link btn btn-link p-0 text-start">
+                                        <span class="d2c_icon text-danger">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                        </span>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+
+                            </li>
+                            <!-- End:Item -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- End:Logout -->
+
+                <!-- Theme Mode -->
+                <div class="card d2c_switch_card">
+                    <div class="card-body p-0">
+                        <ul class="navbar-nav">
+                            <!-- Item -->
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="d2c_icon">
+                                    <i class="fas fa-moon"></i>
+                                </span>
+                                <span>Dark Mood</span>
+                                <span class="form-switch d-flex ms-auto">
+                                    <input class="form-check-input" id="d2c_theme_changer" type="checkbox" role="switch">
+                                </span>
+                            </li>
+                            <!-- End:Item -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- End:Theme Mode -->
+            </div>
+        </div>
+        <!-- End:Sidebar -->
+
+        <!-- Main Body-->
+        {% block content %}
+        {% endblock %}
+        <!-- End:Main Body -->
+    </div>
+
+    <!-- Offcanvas Toggler -->
+    <button class="d2c_offcanvas_toggle position-fixed top-50 start-0 translate-middle-y d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#d2c_sidebar" aria-controls="d2c_sidebar">
+        <i class="far fa-hand-point-right"></i>
+    </button>
+    <!-- End:Offcanvas Toggler -->
+
+    <!-- Initial  Javascript -->
+    <script src="{% static 'lib/jQuery/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap_5/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Chart Config -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{% static 'assets/js/apexchart/script.js' %}"></script>
+
+    <!-- custom js -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+</html>
+
+
+
+
+

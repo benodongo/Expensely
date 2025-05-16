@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    <div class="d2c_main p-4 ps-lg-3">
+
+            <!-- Title -->
+            <h4 class="mb-4 text-capitalize">Groups</h4>
+            <!-- End:Title -->
+             <a href="{% url 'core:group_create' %}" class="btn btn-primary mb-3">Add Group</a>
+
+
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <!-- Basic Table -->
+                    <div class="card h-auto d2c_projects_datatable">
+                        <div class="card-header">
+                            <h6>Groups</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="d2c_advanced_table">
+                                    <thead>
+                                       <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Group Name</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Created By</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for group in groups %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ group.name }}</td>
+                                            <td>{{ group.description }}</td>
+                                            <td>{{ group.created_by.username }}</td>
+                                             <td>
+                                                <a href="{% url 'core:group_members' group.pk %}" class="btn btn-sm btn-outline-info">
+                                                    View Members
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">No groups available.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End:Advanced Table -->
+                </div>
+            </div>
+
+        </div>
+{% endblock %}
+
+
+

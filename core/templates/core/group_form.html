@@ -1,0 +1,46 @@
+   {% extends "core/base.html" %}
+   {% load form_tags %}
+   {% block content %}
+   <div class="d2c_main p-4 ps-lg-3">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Create a Group</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    <div class="mb-3">
+                        {{ form.name.label_tag }}
+                        {{ form.name|add_class:"form-control" }}
+                        {{ form.name.errors }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.description.label_tag }}
+                        {{ form.description|add_class:"form-control" }}
+                        {{ form.description.errors }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.members.label_tag }}
+                        <select name="members" multiple class="form-control">
+                    {% for user in form.members.field.queryset %}
+                        <option value="{{ user.id }}" {% if user in form.members.value %}selected{% endif %}>
+                            {{ user.get_full_name|default:user.username }}
+                        </option>
+                    {% endfor %}
+                </select>
+                        {{ form.members.errors }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Group</button>
+                </form>
+            </div>
+        </div>
+    </div>
+   </div>
+{% endblock %}
+   

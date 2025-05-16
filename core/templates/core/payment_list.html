@@ -1,0 +1,34 @@
+   {% extends "core/base.html" %}
+   {% block content %}
+   <div class="d2c_main p-4 ps-lg-3">
+     <h2>My Payments</h2>
+        <a href="{% url 'payment_create' %}" class="btn btn-primary mb-3">Make Payment</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Expense</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Transaction ID</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.expense.description }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.payment_method.provider }}</td>
+                    <td>{{ payment.status }}</td>
+                    <td>{{ payment.transaction_id }}</td>
+                    <td>{{ payment.timestamp }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">No payments made.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+       </div>
+   {% endblock %}
+   

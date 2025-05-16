@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'assets/images/logo/logo-sm.png' %}" type="image/gif" sizes="16x16">
+    <title>Sign Up</title>
+    <meta name="og:description" content="FinDeshY is a free financial Bootstrap dashboard template to manage your financial data easily. This free financial dashboard uses Bootstrap to provide a responsive and user-friendly interface. Whether you're a small business owner seeking insights into your company's financial health or an individual looking to simplify your personal finances, this free Bootstrap dashboard template has you covered.">
+    <meta name="robots" content="index, follow">
+    <meta name="og:title" property="og:title" content="FinDeshY - Free Financial Bootstrap Dashboard Template">
+    <meta property="og:image" content="https://www.designtocodes.com/wp-content/uploads/2023/10/FinDeshY-Professional-Financial-Bootstrap-Dashboard-Template.jpg">
+    <!-- bootstrap css link -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap_5/bootstrap.min.css' %}">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="{% static 'lib/fontawesome/css/all.min.css' %}">
+    <!-- main css -->
+    <link rel="stylesheet" href="{% static 'assets/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- responsive css -->
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+</head>
+
+<body class="d2c_theme_light">
+
+    <!-- Preloader Start -->
+    <div class="preloader">
+        <img src="{% static 'assets/images/logo/logo.png' %}" alt="DesignToCodes">
+    </div>
+    <!-- Preloader End -->
+
+    <section class="d2c_login_system d2c_sign_up d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xxl-6 offset-xxl-3">
+                    <div class="d2c_login_wrapper">
+                        <div class="text-center mb-4">
+                            <h4 class="text-capitalize">Create your account</h4>
+                            <p class="text-muted">Already have an account? <a href="../authentication/signIn.html" class="text-capitalize text-primary text-decoration-none d2c_link">Sign in here</a>
+                            </p>
+                        </div>
+                       <form method="post" class="form-validation" novalidate>
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                            
+                                <div class="row">
+                                    <div class="col-md mb-3 mb-md-0">
+                                        {{ form.first_name.label_tag }}
+                                        {{ form.first_name }}
+                                        {{ form.first_name.errors }}
+                                    </div>
+                                    <div class="col-md">
+                                        {{ form.last_name.label_tag }}
+                                        {{ form.last_name }}
+                                        {{ form.last_name.errors }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                                {{ form.email.errors }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form.national_id.label_tag }}
+                                {{ form.national_id }}
+                                {{ form.national_id.errors }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form.contact.label_tag }}
+                                {{ form.contact }}
+                                {{ form.contact.errors }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form.gender.label_tag }}
+                                {{ form.gender }}
+                                {{ form.gender.errors }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <div class="input-group">
+                                    {{ form.password1 }}
+                                    <button class="btn ps-0 border-start-0 m-0" type="button"><i class="far fa-eye-slash"></i></button>
+                                    {{ form.password1.errors }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Confirm Password</label>
+                                <div class="input-group">
+                                    {{ form.password2 }}
+                                    <button class="btn ps-0 border-start-0 m-0" type="button"><i class="far fa-eye-slash"></i></button>
+                                    {{ form.password2.errors }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                                <label class="form-check-label text-muted" for="exampleCheck1">
+                                    I accept the <a href="#" class="d2c_link text-primary text-capitalize">Terms and Conditions</a>
+                                </label>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary w-100 text-capitalize">Sign Up</button>
+                            </div>
+                        </form>
+
+                        <button class="d2c_link_btn btn w-100 d-flex align-items-center justify-content-center text-capitalize">
+                            <img src="{% static 'assets/images/google.png' %}" class="me-2" alt="google image">
+                            Sing up With Google
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Initial  Javascript -->
+    <script src="{% static 'lib/jQuery/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap_5/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- custom js -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,27 @@
+from django.urls import path
+from . import views
+from core.views import home_page, group_members_api
+
+app_name = 'core'
+
+urlpatterns = [
+    path('home/', home_page, name='home'),
+    # Groups
+    path('groups/', views.GroupListView.as_view(), name='groups'),
+    path('groups/create/', views.GroupCreateView.as_view(), name='group_create'),
+    path('groups/<int:pk>/members/', views.GroupMemberListView.as_view(), name='group_members'),
+
+    
+    # Expenses
+    path('expenses/', views.ExpenseListView.as_view(), name='expense_list'),
+    path('expenses/create/', views.ExpenseCreateView.as_view(), name='expense_create'),
+    
+    
+    # Payments
+    path('payment-methods/', views.PaymentMethodListView.as_view(), name='payment_method_list'),
+    path('payment-methods/create/', views.PaymentMethodCreateView.as_view(), name='payment_method_create'),
+    path('payments/', views.PaymentListView.as_view(), name='payment_list'),
+    path('payments/create/', views.PaymentCreateView.as_view(), name='payment_create'),
+    path('api/group-members/', group_members_api, name='group_members_api'),
+    
+]

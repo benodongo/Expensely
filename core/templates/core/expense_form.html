@@ -1,0 +1,104 @@
+{% extends "core/base.html" %}
+{% load form_tags %}
+
+{% block content %}
+<div class="d2c_main p-4 ps-lg-3">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Add an Expense</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" id="expenseForm">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    <div class="mb-3">
+                        {{ form.group.label_tag }}
+                        <select name="{{ form.group.html_name }}" id="group-select" class="form-control">
+                            {% for val, text in form.group.field.choices %}
+                                <option value="{{ val }}" {% if form.group.value == val|stringformat:"s" %}selected{% endif %}>
+                                    {{ text }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {{ form.group.errors }}
+                    </div>
+
+
+                    <div class="mb-3">
+                        {{ form.amount.label_tag }}
+                        {{ form.amount|add_class:"form-control" }}
+                        {{ form.amount.errors }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.currency.label_tag }}
+                        {{ form.currency|add_class:"form-control" }}
+                        {{ form.currency.errors }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.description.label_tag }}
+                        {{ form.description|add_class:"form-control" }}
+                        {{ form.description.errors }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.category.label_tag }}
+                        {{ form.category|add_class:"form-control" }}
+                        {{ form.category.errors }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_participants">Participants</label>
+                        <select name="participants" id="id_participants" class="form-control" multiple disabled>
+                            <!-- options will be loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const groupSelect = document.getElementById('group-select');
+    const participantsSelect = document.getElementById('id_participants');
+
+    groupSelect.addEventListener('change', function() {
+        const groupId = this.value;
+        if (!groupId) {
+            participantsSelect.innerHTML = '';
+            participantsSelect.disabled = true;
+            return;
+        }
+
+        fetch(`/core/api/group-members/?group_id=${groupId}`)
+            .then(response => response.json())
+            .then(data => {
+                participantsSelect.innerHTML = '';
+                if (data.error) {
+                    alert(data.error);
+                    participantsSelect.disabled = true;
+                    return;
+                }
+                data.forEach(member => {
+                    const option = document.createElement('option');
+                    option.value = member.id;
+                    option.textContent = member.email; // customize display here
+                    participantsSelect.appendChild(option);
+                });
+                participantsSelect.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error loading participants:', error);
+                participantsSelect.disabled = true;
+            });
+    });
+});
+</script>
+{% endblock %}

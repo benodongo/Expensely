@@ -1,0 +1,211 @@
+@media only screen and (min-width: 0px) and (max-width: 575px) {
+	.card-body {
+		padding: 1rem;
+	}
+	/* ==========error page========== */
+	.d2c_error_content h1 {
+		font-size: 7.375rem;
+	}
+	.d2c_error_content h3 {
+		font-size: 2rem;
+	}
+	.d2c_error_content p {
+		font-size: 1rem;
+	}
+
+	/* ==========login system page========== */
+	.d2c_login_wrapper {
+		padding: 2rem 1.25rem;
+	}
+	.d2c_sign_up {
+		height: auto;
+		padding: 3.75rem 0rem;
+	}
+	/* ==========payment page========== */
+	#d2c_payment_dataTable_length,
+	#d2c_transaction_dataTable_filter {
+		position: initial;
+	}
+	/* ==========Reports,stocks page========== */
+
+	/* notification page */
+	.d2c_notification {
+		padding: 0.625rem !important;
+	}
+	.d2c_notification p {
+		font-size: 0.813rem;
+	}
+	.d2c_notification img {
+		margin-right: 0.5rem !important;
+	}
+
+	/* ========== timeline page ========== */
+	.d2c_timeline_content {
+		width: 100%;
+		margin-bottom: 1.25rem;
+	}
+	.d2c_timeline_upper {
+		margin-bottom: 0rem;
+	}
+	.d2c_timeline_upper .d2c_timeline_content::before,
+	.d2c_timeline_content::before,
+	.d2c_timeline_upper .d2c_timeline_content:last-child::after,
+	.d2c_timeline_upper:before,
+	.d2c_timeline_wrapper .d2c_timeline_content::after {
+		display: none !important;
+	}
+
+	.d2c_timeline_one_content .d2c_card_wrapper {
+		padding: 1.25rem 0rem 1.25rem 0rem !important;
+	}
+	.d2c_timeline_one_content .d2c_years {
+		position: unset;
+		margin-bottom: 0.313rem;
+	}
+	.d2c_timeline_one_content:first-child::after,
+	.d2c_timeline_one_content:nth-child(3)::after {
+		display: none;
+	}
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+	/* ==========error page========== */
+	.d2c_error_content h1 {
+		font-size: 7.375rem;
+	}
+	.d2c_error_content h3 {
+		font-size: 2rem;
+	}
+	.d2c_error_content p {
+		font-size: 1rem;
+	}
+	/* ==========Reports,stocks and fund page========== */
+	#d2c_projects_dataTable_filter,
+	#d2c_stocks_dataTable_length {
+		display: none;
+	}
+
+	/* ========== timeline page ========== */
+	.d2c_timeline_content {
+		width: 100%;
+		margin-bottom: 1.25rem;
+	}
+	.d2c_timeline_upper {
+		margin-bottom: 0rem;
+	}
+	.d2c_timeline_upper .d2c_timeline_content::before,
+	.d2c_timeline_content::before,
+	.d2c_timeline_upper .d2c_timeline_content:last-child::after,
+	.d2c_timeline_upper:before,
+	.d2c_timeline_wrapper .d2c_timeline_content::after {
+		display: none !important;
+	}
+
+	.d2c_timeline_one_content .d2c_card_wrapper {
+		padding: 1.25rem 0rem 1.25rem 0rem !important;
+	}
+	.d2c_timeline_one_content .d2c_years {
+		position: unset;
+		margin-bottom: 0.313rem;
+	}
+	.d2c_timeline_one_content:first-child::after,
+	.d2c_timeline_one_content:nth-child(3)::after {
+		display: none;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	/* ========== Timeline page ========== */
+	.d2c_timeline_content {
+		width: 32%;
+	}
+
+	.d2c_timeline_upper:before {
+		width: 68%;
+	}
+	.d2c_timeline_one_content .d2c_card_wrapper {
+		padding: 1.25rem 0.25rem 1.25rem 0.25rem;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	/* ========== Timeline page ========== */
+	.d2c_timeline_content {
+		width: 30%;
+	}
+	.d2c_timeline_one_content .d2c_card_wrapper {
+		padding: 1.25rem;
+	}
+	.d2c_timeline_upper:before {
+		width: 70%;
+	}
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+	.d2c_timeline_one_content .d2c_card_wrapper {
+		padding: 1.25rem 1.5rem 1.25rem 1.5rem;
+	}
+	:root {
+		--bs-body-font-size: 0.875rem;
+	}
+	h1,
+	.h1 {
+		font-size: 2.3rem;
+	}
+	h2,
+	.h2 {
+		font-size: 1.8rem;
+	}
+	h3,
+	.h3 {
+		font-size: 1.5rem;
+	}
+	h4,
+	.h4 {
+		font-size: 1.3rem;
+	}
+	p {
+		font-size: 0.875rem;
+	}
+	.table td,
+	.table th {
+		font-size: 0.875rem;
+	}
+}
+@media only screen and (min-width: 1400px) and (max-width: 1499px) {
+	.d2c_home_card .col-xxl-9 {
+		width: 100%;
+	}
+	.d2c_home_card .col-xxl-3 {
+		width: 100%;
+	}
+
+	.d2c_events h5 {
+		font-size: 14px;
+	}
+
+	.d2c_events p {
+		font-size: 12px;
+	}
+
+	.d2c_mail_tab .btn.btn-light {
+		display: inline-flex;
+		align-items: center;
+		font-size: 12px;
+		padding: 6px 15px;
+		height: 100%;
+		margin: 0;
+	}
+	.d2c_mail_tab .dropdown {
+		height: 100%;
+	}
+	.d2c_mail_tab .btn.btn-light .form-check {
+		min-height: auto;
+	}
+	.d2c_event_calender .col-xxl-2 {
+		width: 30%;
+	}
+	.d2c_event_calender .col-xxl-10 {
+		width: 70%;
+	}
+}

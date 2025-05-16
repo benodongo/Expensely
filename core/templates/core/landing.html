@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expensely - Split Expenses Easily</title>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap_5/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/fontawesome/css/all.min.css' %}">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .app-screenshot {
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'assets/images/logo/logo.png' %}" alt="Expensely" height="40">
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'signup' %}" class="btn btn-outline-primary me-2">Sign Up</a>
+                <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Split expenses with friends, the easy way</h1>
+                    <p class="lead mb-4">Whether it's dinner bills, shared trips, or monthly rent - Expensely makes group payments simple and fair.</p>
+                    <a href="#" class="btn btn-light btn-lg px-5">Get Started</a>
+                </div>
+                <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                    <img src="{% static 'assets/images/expense1.jpg' %}" alt="App Preview" class="app-screenshot img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-5">
+        <div class="container py-5">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="h3 text-muted">Simplify your shared expenses</h2>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0">
+                        <div class="card-body text-center">
+                            <div class="feature-icon d-inline-flex align-items-center justify-content-center rounded-circle mb-3">
+                                <i class="fas fa-utensils fa-2x text-primary"></i>
+                            </div>
+                            <h5>Dining Out</h5>
+                            <p>Split restaurant bills instantly with group members</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card h-100 border-0">
+                        <div class="card-body text-center">
+                            <div class="feature-icon d-inline-flex align-items-center justify-content-center rounded-circle mb-3">
+                                <i class="fas fa-taxi fa-2x text-primary"></i>
+                            </div>
+                            <h5>Ride Sharing</h5>
+                            <p>Automatically calculate fair shares for group rides</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 border-0">
+                        <div class="card-body text-center">
+                            <div class="feature-icon d-inline-flex align-items-center justify-content-center rounded-circle mb-3">
+                                <i class="fas fa-home fa-2x text-primary"></i>
+                            </div>
+                            <h5>Shared Living</h5>
+                            <p>Manage recurring expenses like rent and utilities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="bg-light py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="{% static 'assets/images/email/attachment_img_1.jpg' %}" alt="How it works" class="img-fluid">
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <h2 class="mb-4">How it works</h2>
+                    <div class="d-flex mb-4">
+                        <div class="me-4">
+                            <div class="badge bg-primary rounded-circle p-3">1</div>
+                        </div>
+                        <div>
+                            <h5>Create a Group</h5>
+                            <p>Start by creating a group with your friends or roommates</p>
+                        </div>
+                    </div>
+                    <!-- Repeat steps 2-4 similarly -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Expensely. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'lib/bootstrap_5/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

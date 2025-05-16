@@ -1,0 +1,28 @@
+   {% extends "core/base.html" %}
+   {% block content %}
+   <div class="d2c_main p-4 ps-lg-3">
+        <h2>My Payment Methods</h2>
+        <a href="{% url 'payment_method_create' %}" class="btn btn-primary mb-3">Add Payment Method</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Provider</th>
+                    <th>Details</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for method in methods %}
+                <tr>
+                    <td>{{ method.get_provider_display }}</td>
+                    <td><pre>{{ method.details|json_script:"details" }}</pre></td>
+                    <td>{{ method.is_default|yesno:"Yes,No" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No payment methods found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+       </div>
+   {% endblock %}
+   

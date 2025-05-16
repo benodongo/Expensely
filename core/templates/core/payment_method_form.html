@@ -1,0 +1,12 @@
+   {% extends "core/base.html" %}
+   {% block content %}
+   <div class="d2c_main p-4 ps-lg-3">
+      <h2>Add Payment Method</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+       </div>
+   {% endblock %}
+   
