@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory,  BaseInlineFormSet
+
 from .models import CustomUser, Expense, PaymentMethod, Payment, Group, ExpenseParticipant
 
 class CustomUserCreationForm(UserCreationForm):
@@ -28,33 +29,51 @@ class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ['group', 'amount', 'currency', 'description', 'category']
-        widgets = {
-            'group': forms.Select(attrs={'class': 'form-control', 'id': 'group-select'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            # add widgets for other fields similarly...
-        }
-
-class ExpenseParticipantForm(forms.ModelForm):
-    class Meta:
-        model = ExpenseParticipant
-        fields = ['user', 'share']
 
     def __init__(self, *args, **kwargs):
-        group = kwargs.pop('group', None)
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        if group:
-            self.fields['user'].queryset = group.members.all()
-        else:
-            self.fields['user'].queryset = ExpenseParticipant.objects.none()
+        if user:
+            # Get groups where user is a member
+            self.fields['group'].queryset = user.user_groups.all()
+class BaseExpenseParticipantFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        self.group = kwargs.pop('group', None)
+        super().__init__(*args, **kwargs)
+
+    def _construct_form(self, i, **kwargs):
+        kwargs['group'] = self.group
+        return super()._construct_form(i, **kwargs)
+    
+class ExpenseParticipantForm(forms.ModelForm):
+    email = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': True}))
+    
+    class Meta:
+        model = ExpenseParticipant
+        fields = ['user', 'share', 'email']
+
+    def __init__(self, *args, **kwargs):
+        self.group = kwargs.pop('group', None)
+        super().__init__(*args, **kwargs)
+        
+        if self.group:
+            self.fields['user'].queryset = self.group.members.all()
+            self.fields['user'].widget = forms.HiddenInput()
+            
+            if self.instance and self.instance.user:
+                self.fields['email'].initial = self.instance.user.email
 
 ExpenseParticipantFormSet = inlineformset_factory(
     Expense,
     ExpenseParticipant,
     form=ExpenseParticipantForm,
-    fields=['user', 'share'],
+    formset=BaseExpenseParticipantFormSet, 
+    fields=['email', 'share'],
     extra=1,
     can_delete=False
 )
+
+
 class PaymentMethodForm(forms.ModelForm):
     class Meta:
         model = PaymentMethod

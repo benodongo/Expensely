@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from core.views import home_page, group_members_api
+from core.views import home_page, group_members_api,load_participant_forms
 
 app_name = 'core'
 
@@ -15,6 +15,7 @@ urlpatterns = [
     # Expenses
     path('expenses/', views.ExpenseListView.as_view(), name='expense_list'),
     path('expenses/create/', views.ExpenseCreateView.as_view(), name='expense_create'),
+     path('expenses/load-participant-forms/', load_participant_forms, name='load_participant_forms'),
     
     
     # Payments

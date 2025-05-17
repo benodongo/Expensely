@@ -1,16 +1,15 @@
 {% extends "core/base.html" %}
-
-{% block content %} 
+{% load humanize %}
+{% load custom_filters %}
+{% block content %}
 <div class="d2c_main p-4 ps-lg-3">
-    <!-- Title -->
-    <h4 class="mb-4 text-capitalize">Group Expense Dashboard</h4>
-    <!-- End:Title -->
+    <h4 class="mb-4 text-capitalize">Expense Dashboard</h4>
 
     <div class="row d2c_home_card">
         <div class="col-xxl-9">
             <div class="row">
                 <!-- Active Groups Card -->
-               <div class="col-xl-4 col-md-6 mb-4">
+                <div class="col-xl-4 col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
                             <div class="d-flex align-items-center mb-3">
@@ -19,18 +18,20 @@
                                 </div>
                                 <div>
                                     <h6>Active Groups</h6>
-                                    <h2 class="mb-0">5</h2>
+                                    <h2 class="mb-0">{{ group_count }}</h2>
                                 </div>
                             </div>
                             <div class="list-group mt-auto">
+                                {% for group in active_groups %}
                                 <a href="#" class="list-group-item list-group-item-action">
-                                    Roommates 2023
-                                    <span class="badge bg-primary float-end">4 members</span>
+                                    {{ group.name }}
+                                    <span class="badge bg-primary float-end">
+                                        {{ group.members.count }} member{{ group.members.count|pluralize }}
+                                    </span>
                                 </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    Europe Trip
-                                    <span class="badge bg-primary float-end">6 members</span>
-                                </a>
+                                {% empty %}
+                                <div class="text-muted p-2">No active groups</div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -46,13 +47,16 @@
                                 </div>
                                 <div>
                                     <h6>Total Group Expenses</h6>
-                                    <h2 class="mb-0">Ksh. 2,450</h2>
+                                    <h2 class="mb-0">Ksh.{{ total_group_expenses|floatformat:2|intcomma }}</h2>
                                 </div>
                             </div>
                             <div class="progress mt-3 mt-auto">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%" 
-                                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
-                                    65% Settled
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                    style="width: {{ settlement_percentage|floatformat:0 }}%" 
+                                    aria-valuenow="{{ settlement_percentage|floatformat:0 }}" 
+                                    aria-valuemin="0" 
+                                    aria-valuemax="100">
+                                    {{ settlement_percentage|floatformat:0 }}% Settled
                                 </div>
                             </div>
                         </div>
@@ -69,12 +73,12 @@
                                 </div>
                                 <div>
                                     <h6>Your Total Balance</h6>
-                                    <h2 class="mb-0">Ksh. +320</h2>
+                                    <h2 class="mb-0">Ksh.{{ net_balance|floatformat:2|intcomma }}</h2>
                                 </div>
                             </div>
                             <div class="mt-3 mt-auto">
-                                <span class="badge bg-success me-2">Owed: $450</span>
-                                <span class="badge bg-danger">Owes: Ksh. 130</span>
+                                <span class="badge bg-success me-2">Owed: Ksh.{{ owed_to_user|floatformat:2|intcomma }}</span>
+                                <span class="badge bg-danger">Owes: Ksh.{{ user_owes|floatformat:2|intcomma }}</span>
                             </div>
                         </div>
                     </div>
@@ -86,22 +90,20 @@
                         <div class="card-body">
                             <h6 class="mb-3">Recent Expenses</h6>
                             <div class="list-group">
+                                {% for expense in recent_expenses %}
                                 <a href="#" class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">Airbnb Payment</h6>
-                                        <small>3 days ago</small>
+                                        <h6 class="mb-1">{{ expense.description }}</h6>
+                                        <small>{{ expense.date|timesince }} ago</small>
                                     </div>
-                                    <p class="mb-1">Europe Trip · Ksh. 1,200</p>
-                                    <small class="text-muted">Split equally</small>
+                                    <p class="mb-1">{{ expense.group.name }} · Ksh.{{ expense.amount|floatformat:2|intcomma }}</p>
+                                    <small class="text-muted">
+                                        Paid by {% if expense.paid_by == request.user %}you{% else %}{{ expense.paid_by.email }}{% endif %}
+                                    </small>
                                 </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">Groceries</h6>
-                                        <small>1 week ago</small>
-                                    </div>
-                                    <p class="mb-1">Roommates · $85</p>
-                                    <small class="text-muted">Custom split</small>
-                                </a>
+                                {% empty %}
+                                <div class="text-muted p-2">No recent expenses</div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -109,26 +111,26 @@
 
                 <!-- Payment Status -->
                 <div class="col-xl-4 col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="btn btn-info rounded-circle me-3">
                                     <i class="fas fa-money-bill-wave fa-2x"></i>
                                 </div>
                                 <div>
                                     <h6>Pending Payments</h6>
-                                    <h2 class="mb-0">3</h2>
+                                    <h2 class="mb-0">{{ pending_payments|length }}</h2>
                                 </div>
                             </div>
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush mt-auto">
+                                {% for payment in pending_payments %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    John owes you
-                                    <span class="badge bg-primary">Ksh. 45</span>
+                                    {{ payment.expense.description|truncatechars:20 }}
+                                    <span class="badge bg-primary">Ksh.{{ payment.amount|floatformat:2 }}</span>
                                 </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    You owe Sarah
-                                    <span class="badge bg-danger"> Ksh . 85</span>
-                                </li>
+                                {% empty %}
+                                <li class="list-group-item text-muted">No pending payments</li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -143,62 +145,34 @@
                     <h6 class="mb-0">Group Balances</h6>
                 </div>
                 <div class="card-body">
+                    {% for balance in group_balances %}
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h6>Europe Trip</h6>
+                            <h6>{{ balance.group.name }}</h6>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <small class="text-success">You're owed</small>
-                                    <h4 class="mb-0">$220</h4>
+                                    {% if balance.net > 0 %}
+                                        <small class="text-success">You're owed</small>
+                                        <h4 class="mb-0">Ksh.{{ balance.net|floatformat:2 }}</h4>
+                                    {% else %}
+                                        <small class="text-danger">You owe</small>
+                                        <h4 class="mb-0">Ksh.{{ balance.net|abs_val|floatformat:2 }}</h4>
+                                    {% endif %}
                                 </div>
                                 <div class="avatar-group">
-                                    <span class="avatar bg-primary">JD</span>
-                                    <span class="avatar bg-success">SA</span>
-                                    <span class="avatar bg-warning">+3</span>
+                                    {% for member in balance.group.members.all|slice:":2" %}
+                                        <span class="avatar bg-primary">{{ member.email|first|upper }}</span>
+                                    {% endfor %}
+                                    {% if balance.group.members.count > 2 %}
+                                        <span class="avatar bg-secondary">+{{ balance.group.members.count|add:"-2" }}</span>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h6>Roommates</h6>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <small class="text-danger">You owe</small>
-                                    <h4 class="mb-0">$75</h4>
-                                </div>
-                                <div class="avatar-group">
-                                    <span class="avatar bg-info">MK</span>
-                                    <span class="avatar bg-secondary">AL</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Expense Overview -->
-    <div class="row">
-        <div class="col-xl-6 mb-4">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h6>Expense Distribution</h6>
-                </div>
-                <div class="card-body">
-                    <div id="expensePieChart"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-6 mb-4">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h6>Monthly Expense Trend</h6>
-                </div>
-                <div class="card-body">
-                    <div id="expenseLineChart"></div>
+                    {% empty %}
+                    <div class="text-muted p-2">No group balances</div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -217,30 +191,30 @@
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>Group</th>
-                                    <th>Description</th>
-                                    <th>Paid By</th>
                                     <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Group</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for payment in recent_payments %}
                                 <tr>
-                                    <td>2023-03-20</td>
-                                    <td>Europe Trip</td>
-                                    <td>Train tickets</td>
-                                    <td>You</td>
-                                    <td>$450</td>
-                                    <td><span class="badge bg-success">Settled</span></td>
+                                    <td>{{ payment.timestamp|date:"M d, Y" }}</td>
+                                    <td>Ksh.{{ payment.amount|floatformat:2 }}</td>
+                                    <td>{{ payment.expense.description|truncatechars:30 }}</td>
+                                    <td>{{ payment.expense.group.name }}</td>
+                                    <td>
+                                        <span class="badge {% if payment.status == 'COMPLETED' %}bg-success{% else %}bg-warning{% endif %}">
+                                            {{ payment.get_status_display }}
+                                        </span>
+                                    </td>
                                 </tr>
+                                {% empty %}
                                 <tr>
-                                    <td>2023-03-19</td>
-                                    <td>Roommates</td>
-                                    <td>Internet Bill</td>
-                                    <td>Sarah</td>
-                                    <td>$85</td>
-                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td colspan="5" class="text-muted text-center">No recent transactions</td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

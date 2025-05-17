@@ -1,0 +1,17 @@
+{{ formset.management_form }}
+{% for form in formset %}
+<div class="participant-form mb-3">
+    <div class="d-flex align-items-center">
+        <div class="flex-grow-1">
+            <input type="hidden" name="{{ form.user.html_name }}" value="{{ form.user.value }}">
+            <span class="me-2">{{ form.user.value.email }}</span>
+        </div>
+        <div style="width: 150px;">
+            {{ form.share }}
+        </div>
+    </div>
+    {% if form.share.errors %}
+        <div class="text-danger">{{ form.share.errors }}</div>
+    {% endif %}
+</div>
+{% endfor %}

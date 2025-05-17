@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load form_tags %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="d2c_main p-4 ps-lg-3">
     <div class="container mt-5">
@@ -9,96 +9,72 @@
                 <h4 class="mb-0">Add an Expense</h4>
             </div>
             <div class="card-body">
-                <form method="post" id="expenseForm">
-                    {% csrf_token %}
-                    {{ form.non_field_errors }}
-
-                    <div class="mb-3">
-                        {{ form.group.label_tag }}
-                        <select name="{{ form.group.html_name }}" id="group-select" class="form-control">
-                            {% for val, text in form.group.field.choices %}
-                                <option value="{{ val }}" {% if form.group.value == val|stringformat:"s" %}selected{% endif %}>
-                                    {{ text }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                        {{ form.group.errors }}
+              <form method="post" id="expenseForm">
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="mt-4">
+                    <h5>Participants</h5>
+                    <div id="participant-forms">
+                        {{ formset.management_form }}
+                        {% for form in formset %}
+                            <div class="participant-form border p-2 mb-2">
+                                {% if form.email.value %}
+                                    <label>Participant: {{ form.email.value }}</label>
+                                {% endif %}
+                                {{ form.user }}
+                                {{ form.share|as_crispy_field }}
+                            </div>
+                        {% endfor %}
                     </div>
-
-
-                    <div class="mb-3">
-                        {{ form.amount.label_tag }}
-                        {{ form.amount|add_class:"form-control" }}
-                        {{ form.amount.errors }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.currency.label_tag }}
-                        {{ form.currency|add_class:"form-control" }}
-                        {{ form.currency.errors }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.description.label_tag }}
-                        {{ form.description|add_class:"form-control" }}
-                        {{ form.description.errors }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.category.label_tag }}
-                        {{ form.category|add_class:"form-control" }}
-                        {{ form.category.errors }}
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="id_participants">Participants</label>
-                        <select name="participants" id="id_participants" class="form-control" multiple disabled>
-                            <!-- options will be loaded dynamically -->
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Add Expense</button>
-                </form>
+                </div>
+                
+                <button type="submit" class="btn btn-success mt-3">Save Expense</button>
+            </form>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const groupSelect = document.getElementById('group-select');
-    const participantsSelect = document.getElementById('id_participants');
+  document.addEventListener('DOMContentLoaded', function() {
+    const groupSelect = document.getElementById('id_group');
+    const participantFormsContainer = document.getElementById('participant-forms');
 
-    groupSelect.addEventListener('change', function() {
-        const groupId = this.value;
+    async function loadParticipantForms() {
+        const groupId = groupSelect.value;
         if (!groupId) {
-            participantsSelect.innerHTML = '';
-            participantsSelect.disabled = true;
+            participantFormsContainer.innerHTML = '';
             return;
         }
 
-        fetch(`/core/api/group-members/?group_id=${groupId}`)
-            .then(response => response.json())
-            .then(data => {
-                participantsSelect.innerHTML = '';
-                if (data.error) {
-                    alert(data.error);
-                    participantsSelect.disabled = true;
-                    return;
-                }
-                data.forEach(member => {
-                    const option = document.createElement('option');
-                    option.value = member.id;
-                    option.textContent = member.email; // customize display here
-                    participantsSelect.appendChild(option);
-                });
-                participantsSelect.disabled = false;
-            })
-            .catch(error => {
-                console.error('Error loading participants:', error);
-                participantsSelect.disabled = true;
-            });
-    });
+        try {
+            const response = await fetch(`/core/expenses/load-participant-forms/?group=${groupId}`);
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to load participants');
+            }
+
+            const html = await response.text();
+            participantFormsContainer.innerHTML = html;
+            
+        } catch (error) {
+            console.error('Error loading participants:', error);
+            participantFormsContainer.innerHTML = `
+                <div class="alert alert-danger">
+                    Error loading participants: ${error.message}
+                </div>
+            `;
+        }
+    }
+
+    groupSelect.addEventListener('change', loadParticipantForms);
+    
+    // Initial load if group is pre-selected
+    if (groupSelect.value) {
+        loadParticipantForms();
+    }
 });
 </script>
 {% endblock %}
