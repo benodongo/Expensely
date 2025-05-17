@@ -1,35 +1,50 @@
-   {% extends "core/base.html" %}
-   {% block content %}
-   <div class="d2c_main p-4 ps-lg-3">
-    <h2>Expenses</h2>
-<a href="{% url 'core:expense_create' %}" class="btn btn-primary mb-3">Add Expense</a>
-<table class="table table-bordered">
+{% extends "core/base.html" %}
+{% block content %}
+<div class="d2c_main p-4 ps-lg-3">
+  <h2>Expenses</h2>
+  <a href="{% url 'core:expense_create' %}" class="btn btn-primary mb-3">Add Expense</a>
+  <table class="table table-bordered">
     <thead>
-        <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Currency</th>
-            <th>Category</th>
-            <th>Paid By</th>
-            <th>Date</th>
-        </tr>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Currency</th>
+        <th>Category</th>
+        <th>Paid By</th>
+        <th>Date</th>
+        <th>Action</th> <!-- New column -->
+      </tr>
     </thead>
     <tbody>
-        {% for expense in expenses %}
+      {% for expense in expenses %}
         <tr>
-            <td>{{ expense.description }}</td>
-            <td>{{ expense.amount }}</td>
-            <td>{{ expense.currency }}</td>
-            <td>{{ expense.category }}</td>
-            <td>{{ expense.paid_by.get_full_name }}</td>
-            <td>{{ expense.date }}</td>
+          <td>{{ expense.description }}</td>
+          <td>{{ expense.amount }}</td>
+          <td>{{ expense.currency }}</td>
+          <td>{{ expense.category }}</td>
+          <td>{{ expense.paid_by.get_full_name }}</td>
+          <td>{{ expense.date }}</td>
+          <td>
+            {% for participant in expense.expenseparticipant_set.all %}
+              {% if participant.user == request.user %}
+                {% if participant.settled %}
+                  <span class="badge bg-success">Settled</span>
+                {% else %}
+                  <form action="{% url 'core:make_payment' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="expense_id" value="{{ expense.id }}">
+                    <input type="hidden" name="provider" value="MPESA">
+                    <button type="submit" class="btn btn-sm btn-outline-success">Settle (M-Pesa)</button>
+                  </form>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </td>
         </tr>
-        {% empty %}
-        <tr><td colspan="6">No expenses found.</td></tr>
-        {% endfor %}
+      {% empty %}
+        <tr><td colspan="7">No expenses found.</td></tr>
+      {% endfor %}
     </tbody>
-</table>
-
+  </table>
 </div>
 {% endblock %}
-   

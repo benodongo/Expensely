@@ -1,5 +1,6 @@
 
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm,  PaymentMethodForm, PaymentForm, GroupForm,ExpenseParticipantForm, ExpenseForm, ExpenseParticipantFormSet
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +14,12 @@ from django.db.models import Sum, Count, Q
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.core.exceptions import ObjectDoesNotExist
+import uuid
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+import time
+import threading
+from decimal import Decimal
 
 def signup_view(request):
     if request.method == 'POST':
@@ -291,5 +298,71 @@ def group_members_api(request):
     except Group.DoesNotExist:
         return JsonResponse({'error': 'Group not found'}, status=404)
 
-    members = group.members.values('id', 'email')  # You can add other fields if you want
+    members = group.members.values('id', 'email')  
     return JsonResponse(list(members), safe=False)
+
+
+@csrf_exempt
+def make_payment(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST allowed'}, status=405)
+
+    user = request.user
+    expense_id = request.POST.get('expense_id')
+    provider = request.POST.get('provider')  # 'MPESA', 'PAYPAL', 'STRIPE'
+
+    if not expense_id or not provider:
+        return JsonResponse({'error': 'Missing expense_id or provider'}, status=400)
+
+    expense = get_object_or_404(Expense, id=expense_id)
+
+    # Get user's share
+    try:
+        participant = ExpenseParticipant.objects.get(expense=expense, user=user)
+    except ExpenseParticipant.DoesNotExist:
+        return JsonResponse({'error': 'User is not a participant of this expense'}, status=403)
+
+    if participant.settled:
+        return JsonResponse({'message': 'Already settled'}, status=200)
+
+    # Find payment method
+    try:
+        payment_method = PaymentMethod.objects.get(user=user, provider=provider)
+    except PaymentMethod.DoesNotExist:
+        return JsonResponse({'error': f'Payment method {provider} not found for user'}, status=400)
+
+    # Create payment record
+    payment = Payment.objects.create(
+        expense=expense,
+        payer=user,
+        amount=participant.share,
+        payment_method=payment_method,
+        status='PENDING',
+        transaction_id='TXN-' + str(uuid.uuid4())[:10]
+    )
+
+    def simulate_payment_success():
+        time.sleep(2)
+        payment.status = 'COMPLETED'
+        payment.save()
+        participant.settled = True
+        participant.save()
+
+    if provider == 'MPESA':
+        # Simulate M-Pesa with a thread
+        threading.Thread(target=simulate_payment_success).start()
+        message = "Mock M-Pesa payment initiated."
+    else:
+        # Just pretend it's successful for now (stub)
+        payment.status = 'COMPLETED'
+        payment.save()
+        participant.settled = True
+        participant.save()
+        message = f"Stub: {provider} payment completed."
+
+    return JsonResponse({
+        'message': message,
+        'transaction_id': payment.transaction_id,
+        'status': payment.status,
+        'amount': str(participant.share)
+    })
