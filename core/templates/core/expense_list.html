@@ -12,7 +12,8 @@
         <th>Category</th>
         <th>Paid By</th>
         <th>Date</th>
-        <th>Action</th> <!-- New column -->
+        <th>Details</th>
+        <th>Payment</th> 
       </tr>
     </thead>
     <tbody>
@@ -25,18 +26,44 @@
           <td>{{ expense.paid_by.get_full_name }}</td>
           <td>{{ expense.date }}</td>
           <td>
+            <a href="{% url 'core:expense-detail' expense.id %}" class="btn btn-sm btn-outline-secondary">Details</a>
+          </td>
+          <td>
             {% for participant in expense.expenseparticipant_set.all %}
               {% if participant.user == request.user %}
                 {% if participant.settled %}
                   <span class="badge bg-success">Settled</span>
-                {% else %}
-                  <form action="{% url 'core:make_payment' %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <input type="hidden" name="expense_id" value="{{ expense.id }}">
-                    <input type="hidden" name="provider" value="MPESA">
-                    <button type="submit" class="btn btn-sm btn-outline-success">Settle (M-Pesa)</button>
-                  </form>
-                {% endif %}
+             {% else %}
+              <form action="{% url 'core:make_payment' %}" method="post" class="mpesa-form" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="expense_id" value="{{ expense.id }}">
+                <input type="hidden" name="provider" value="MPESA">
+                <button type="submit" class="btn btn-sm btn-outline-success">
+                  <span class="btn-text">Settle (M-Pesa)</span>
+                  <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+              </form>
+
+              <script>
+                document.querySelectorAll('.mpesa-form').forEach(function(form) {
+                  form.addEventListener('submit', function(e) {
+                    const button = form.querySelector('button');
+                    const btnText = button.querySelector('.btn-text');
+                    const spinner = button.querySelector('.spinner-border');
+
+                    // Show spinner and disable button
+                    btnText.textContent = "Processing...";
+                    spinner.classList.remove('d-none');
+                    button.disabled = true;
+
+                    // Optionally delay redirect
+                    setTimeout(() => {
+                      window.location.href = "{% url 'core:expense_list' %}";
+                    }, 60000); // 60 seconds
+                  });
+                });
+              </script>
+            {% endif %}
               {% endif %}
             {% endfor %}
           </td>

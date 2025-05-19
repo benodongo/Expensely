@@ -1,17 +1,26 @@
-{{ formset.management_form }}
-{% for form in formset %}
-<div class="participant-form mb-3">
-    <div class="d-flex align-items-center">
-        <div class="flex-grow-1">
-            <input type="hidden" name="{{ form.user.html_name }}" value="{{ form.user.value }}">
-            <span class="me-2">{{ form.user.value.email }}</span>
+   {% load crispy_forms_tags %}
+   {{ formset.management_form }}
+    {% for form in formset %}
+        <div class="participant-form border p-2 mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>
+                        {% if form.initial.email %}
+                            {{ form.initial.email }}
+                        {% elif form.instance.user %}
+                            {{ form.instance.user.email }}
+                        {% else %}
+                            Unknown user
+                        {% endif %}
+                    </strong>
+                    {{ form.user }}  {# hidden input #}
+                </div>
+                <div style="width: 150px;">
+                    {{ form.share|as_crispy_field }}
+                </div>
+            </div>
+            {% if form.share.errors %}
+                <div class="text-danger">{{ form.share.errors }}</div>
+            {% endif %}
         </div>
-        <div style="width: 150px;">
-            {{ form.share }}
-        </div>
-    </div>
-    {% if form.share.errors %}
-        <div class="text-danger">{{ form.share.errors }}</div>
-    {% endif %}
-</div>
-{% endfor %}
+    {% endfor %}

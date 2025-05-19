@@ -44,10 +44,10 @@ class BaseExpenseParticipantFormSet(BaseInlineFormSet):
     def _construct_form(self, i, **kwargs):
         kwargs['group'] = self.group
         return super()._construct_form(i, **kwargs)
-    
+
 class ExpenseParticipantForm(forms.ModelForm):
     email = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': True}))
-    
+
     class Meta:
         model = ExpenseParticipant
         fields = ['user', 'share', 'email']
@@ -59,16 +59,26 @@ class ExpenseParticipantForm(forms.ModelForm):
         if self.group:
             self.fields['user'].queryset = self.group.members.all()
             self.fields['user'].widget = forms.HiddenInput()
-            
-            if self.instance and self.instance.user:
-                self.fields['email'].initial = self.instance.user.email
+
+        if self.instance and hasattr(self.instance, 'user') and self.instance.user:
+            self.fields['email'].initial = self.instance.user.email
+
+ExpenseParticipantFormSet = inlineformset_factory(
+    Expense,
+    ExpenseParticipant,
+    form=ExpenseParticipantForm,
+    formset=BaseExpenseParticipantFormSet,
+    fields=['user', 'share', 'email'],
+    extra=1,
+    can_delete=False
+)
 
 ExpenseParticipantFormSet = inlineformset_factory(
     Expense,
     ExpenseParticipant,
     form=ExpenseParticipantForm,
     formset=BaseExpenseParticipantFormSet, 
-    fields=['email', 'share'],
+    fields=['user', 'email', 'share'],
     extra=1,
     can_delete=False
 )

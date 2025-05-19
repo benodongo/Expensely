@@ -246,7 +246,7 @@
 
                                     <!-- Sub Menu Item -->
                                     <li class="nav-item">
-                                        <a class="sub-menu-link" href="./pages/transaction.html">
+                                        <a class="sub-menu-link" href="{% url 'core:payment_list' %}">
                                             <span class="d2c_icon">
                                                 <i class="fas fa-list-alt"></i>
                                             </span>
@@ -259,28 +259,18 @@
 
                                     <!-- Sub Menu Item -->
                                     <li class="nav-item">
-                                        <a class="sub-menu-link" href="./pages/wallet.html">
+                                        <a class="sub-menu-link" href="{% url 'core:payment_method_list' %}">
                                             <span class="d2c_icon">
                                                 <i class="fas fa-wallet"></i>
                                             </span>
                                             <span>
-                                                Wallet
+                                                Payment Methods
                                             </span>
                                         </a>
                                     </li>
                                     <!-- End:Sub Menu Item -->
 
-                                    <!-- Sub Menu Item -->
-                                    <li class="nav-item">
-                                        <a class="sub-menu-link" href="./pages/investment.html">
-                                            <span class="d2c_icon">
-                                                <i class="fas fa-network-wired"></i>
-                                            </span>
-                                            <span>
-                                                Investment
-                                            </span>
-                                        </a>
-                                    </li>
+                                   
                                     <!-- End:Sub Menu Item -->
 
 
@@ -301,40 +291,6 @@
                                 <!-- End:Sub Menu -->
                             </li>
                             <!-- End:Menu Item -->
-
-
-
-                            <!-- Menu Item -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span>Extra</span>
-                                </a>
-
-                                <!-- Sub Menu-->
-                                <ul class="sub-menu collapse show" id="extra">
-
-                                    <!-- Sub Menu Item -->
-                                    <li class="nav-item">
-                                        <a class="sub-menu-link" href="./pages/faq.html">
-                                            <span class="d2c_icon">
-                                                <i class="fas fa-question-circle"></i>
-                                            </span>
-                                            <span>
-                                                FAQ
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <!-- End:Sub Menu Item -->
-
-                                  
-
-                                   
-                                </ul>
-                                <!-- End:Sub Menu -->
-                            </li>
-                            <!-- End:Menu Item -->
-
-                          
                         </ul>
                     </div>
                 </div>

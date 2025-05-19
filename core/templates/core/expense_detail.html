@@ -1,0 +1,50 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="d2c_main p-4 ps-lg-3">
+  <h2 class="mb-4">Expense Details</h2>
+  
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ expense.description }}</h5>
+      <p class="card-text mb-1">
+        <strong>Amount:</strong> {{ expense.amount }} {{ expense.currency }}
+      </p>
+      <p class="card-text mb-1">
+        <strong>Category:</strong> {{ expense.category }}
+      </p>
+      <p class="card-text">
+        <strong>Paid by:</strong> <a href="mailto:{{ expense.paid_by.email }}">{{ participant.user.first_name  }}  {{ participant.user.last_name  }}</a>
+      </p>
+      <p class="card-text">
+        <small class="text-muted">Date: {{ expense.date|date:"F j, Y, g:i a" }}</small>
+      </p>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h4 class="mb-0">Participants and Shares</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+      {% for participant in expense.expenseparticipant_set.all %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ participant.user.first_name  }}  {{ participant.user.last_name  }}</strong>
+        </div>
+        <span class="badge bg-primary rounded-pill">{{ participant.share }}</span>
+      </li>
+      {% empty %}
+      <li class="list-group-item text-muted">No participants found.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="mt-4">
+    <a href="{% url 'core:expense_list' %}" class="btn btn-outline-secondary">
+      &larr; Back to Expense List
+    </a>
+  </div>
+
+</div>
+{% endblock %}
