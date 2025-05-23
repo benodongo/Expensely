@@ -160,7 +160,7 @@ class ExpenseListView(LoginRequiredMixin, ListView):
 class ExpenseCreateView(CreateView):
     model = Expense
     form_class = ExpenseForm
-    success_url = reverse_lazy('core:expense-list')
+    success_url = reverse_lazy('core:expense_list')
     template_name = 'core/expense_form.html'
     
     def get_formset(self, group, data=None):
@@ -201,12 +201,17 @@ class ExpenseCreateView(CreateView):
             expense = form.save(commit=False)
             expense.paid_by = request.user  # assign current user here
             expense.save()
+            participants = []
             total_share = 0
             for participant_form in formset:
                 participant = participant_form.save(commit=False)
                 participant.expense = expense
                 total_share += participant.share or 0
                 participant.save()
+                participants.append(participant.user) 
+
+            expense.participants.set(participants) 
+
             if total_share != expense.amount:
                 form.add_error(None, "Total shares must equal the expense amount.")
                 expense.delete()  # Rollback
